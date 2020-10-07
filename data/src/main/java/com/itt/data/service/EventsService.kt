@@ -4,6 +4,6 @@
 
 package com.itt.data.service
 
-interface TaskService {
-    fun deleteAllTasks()
+interface EventsService {
+    fun deleteAllEvents()
 }

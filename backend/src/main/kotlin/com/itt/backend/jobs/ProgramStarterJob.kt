@@ -6,7 +6,7 @@ package com.itt.backend.jobs
 
 import com.itt.backend.IttBackendApplication
 import com.itt.backend.addSeconds
-import com.itt.data.service.TaskService
+import com.itt.data.service.EventsService
 import org.quartz.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -26,7 +26,7 @@ class ProgramStarterJob : Job {
     private val scheduler: Scheduler? = null
 
     @Autowired
-    private val taskService: TaskService? = null
+    private val eventsService: EventsService? = null
 
     companion object{
         const val jobGroup = "ITT-QUARTZ_GROUP: "
@@ -40,7 +40,7 @@ class ProgramStarterJob : Job {
         IttBackendApplication.serversRunning.set(0)
 
         //Clear all events from db table
-        taskService?.deleteAllTasks()
+        eventsService?.deleteAllEvents()
 
         //Stop jobs if running
         stopJobs(

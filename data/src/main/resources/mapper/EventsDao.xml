@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.itt.data.dao.TasksDao">
-  <resultMap id="BaseResultMap" type="com.itt.data.model.Task">
+<mapper namespace="com.itt.data.dao.EventsDao">
+  <resultMap id="BaseResultMap" type="com.itt.data.model.Event">
     <id column="id" jdbcType="DECIMAL" property="id" />
+    <result column="program_type" jdbcType="DECIMAL" property="programType" />
+    <result column="color" jdbcType="VARCHAR" property="color" />
+    <result column="message" jdbcType="VARCHAR" property="message" />
+    <result column="program_time" jdbcType="TIMESTAMP" property="programTime" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
@@ -65,15 +69,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, created_at, updated_at
+    id, program_type, color, message, program_time, created_at, updated_at
   </sql>
-  <select id="selectByExample" parameterType="com.itt.data.model.TaskExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.itt.data.model.EventExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tasks
+    from events
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -84,26 +88,42 @@
   <select id="selectByPrimaryKey" parameterType="java.math.BigDecimal" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from tasks
+    from events
     where id = #{id,jdbcType=DECIMAL}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
-    delete from tasks
+    delete from events
     where id = #{id,jdbcType=DECIMAL}
   </delete>
-  <delete id="deleteByExample" parameterType="com.itt.data.model.TaskExample">
-    delete from tasks
+  <delete id="deleteByExample" parameterType="com.itt.data.model.EventExample">
+    delete from events
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.itt.data.model.Task" useGeneratedKeys="true">
-    insert into tasks (created_at, updated_at)
-    values (#{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP})
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.itt.data.model.Event" useGeneratedKeys="true">
+    insert into events (program_type, color, message, 
+      program_time, created_at, updated_at
+      )
+    values (#{programType,jdbcType=DECIMAL}, #{color,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR}, 
+      #{programTime,jdbcType=TIMESTAMP}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}
+      )
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.itt.data.model.Task" useGeneratedKeys="true">
-    insert into tasks
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.itt.data.model.Event" useGeneratedKeys="true">
+    insert into events
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="programType != null">
+        program_type,
+      </if>
+      <if test="color != null">
+        color,
+      </if>
+      <if test="message != null">
+        message,
+      </if>
+      <if test="programTime != null">
+        program_time,
+      </if>
       <if test="createdAt != null">
         created_at,
       </if>
@@ -112,6 +132,18 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="programType != null">
+        #{programType,jdbcType=DECIMAL},
+      </if>
+      <if test="color != null">
+        #{color,jdbcType=VARCHAR},
+      </if>
+      <if test="message != null">
+        #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="programTime != null">
+        #{programTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="createdAt != null">
         #{createdAt,jdbcType=TIMESTAMP},
       </if>
@@ -120,17 +152,29 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.itt.data.model.TaskExample" resultType="java.lang.Long">
-    select count(*) from tasks
+  <select id="countByExample" parameterType="com.itt.data.model.EventExample" resultType="java.lang.Long">
+    select count(*) from events
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update tasks
+    update events
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=DECIMAL},
+      </if>
+      <if test="record.programType != null">
+        program_type = #{record.programType,jdbcType=DECIMAL},
+      </if>
+      <if test="record.color != null">
+        color = #{record.color,jdbcType=VARCHAR},
+      </if>
+      <if test="record.message != null">
+        message = #{record.message,jdbcType=VARCHAR},
+      </if>
+      <if test="record.programTime != null">
+        program_time = #{record.programTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.createdAt != null">
         created_at = #{record.createdAt,jdbcType=TIMESTAMP},
@@ -144,17 +188,33 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update tasks
+    update events
     set id = #{record.id,jdbcType=DECIMAL},
+      program_type = #{record.programType,jdbcType=DECIMAL},
+      color = #{record.color,jdbcType=VARCHAR},
+      message = #{record.message,jdbcType=VARCHAR},
+      program_time = #{record.programTime,jdbcType=TIMESTAMP},
       created_at = #{record.createdAt,jdbcType=TIMESTAMP},
       updated_at = #{record.updatedAt,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.itt.data.model.Task">
-    update tasks
+  <update id="updateByPrimaryKeySelective" parameterType="com.itt.data.model.Event">
+    update events
     <set>
+      <if test="programType != null">
+        program_type = #{programType,jdbcType=DECIMAL},
+      </if>
+      <if test="color != null">
+        color = #{color,jdbcType=VARCHAR},
+      </if>
+      <if test="message != null">
+        message = #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="programTime != null">
+        program_time = #{programTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="createdAt != null">
         created_at = #{createdAt,jdbcType=TIMESTAMP},
       </if>
@@ -164,9 +224,13 @@
     </set>
     where id = #{id,jdbcType=DECIMAL}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.itt.data.model.Task">
-    update tasks
-    set created_at = #{createdAt,jdbcType=TIMESTAMP},
+  <update id="updateByPrimaryKey" parameterType="com.itt.data.model.Event">
+    update events
+    set program_type = #{programType,jdbcType=DECIMAL},
+      color = #{color,jdbcType=VARCHAR},
+      message = #{message,jdbcType=VARCHAR},
+      program_time = #{programTime,jdbcType=TIMESTAMP},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
       updated_at = #{updatedAt,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=DECIMAL}
   </update>
