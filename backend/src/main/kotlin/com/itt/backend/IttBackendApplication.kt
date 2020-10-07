@@ -10,7 +10,7 @@ import org.springframework.boot.runApplication
  * @constructor Create empty Itt backend application
  */
 @SpringBootApplication
-@MapperScan("com.itt.data.dao")
+@MapperScan("com.itt.data")
 class IttBackendApplication {
 
 }

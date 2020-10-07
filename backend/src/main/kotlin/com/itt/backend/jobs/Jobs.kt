@@ -4,6 +4,7 @@
 
 package com.itt.backend.jobs
 
+import com.itt.data.service.TaskService
 import org.quartz.*
 import org.quartz.impl.StdSchedulerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -66,10 +67,14 @@ class ProgramStarterJob : Job {
     @Autowired
     private val scheduler: Scheduler? = null
 
+    @Autowired
+    private val taskService: TaskService? = null
+
     @Throws(JobExecutionException::class)
     override fun execute(arg0: JobExecutionContext?) {
         println("Task Tracker Job Started")
-        //TODO: 0. Clear DB tasks table
+        //Clear DB tasks table
+        taskService?.deleteAllTasks()
         //TODO: 1. Stop, Launch START job
         //TODO: 2. Stop, Launch STOP job
         //TODO: 3. Stop, Launch REPORT job
