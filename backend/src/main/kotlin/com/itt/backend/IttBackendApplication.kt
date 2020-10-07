@@ -4,11 +4,25 @@ import org.mybatis.spring.annotation.MapperScan
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
+/**
+ * Itt backend application
+ *
+ * @constructor Create empty Itt backend application
+ */
 @SpringBootApplication
 @MapperScan("com.itt.data.dao")
-class IttBackendApplication
+class IttBackendApplication {
 
+}
+
+/**
+ * Entry point for whole application
+ *
+ * @param args
+ */
 fun main(args: Array<String>) {
     runApplication<IttBackendApplication>(*args)
 }
+
+
 
