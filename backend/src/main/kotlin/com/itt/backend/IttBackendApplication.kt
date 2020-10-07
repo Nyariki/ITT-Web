@@ -3,6 +3,7 @@ package com.itt.backend
 import org.mybatis.spring.annotation.MapperScan
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * Itt backend application
@@ -12,6 +13,11 @@ import org.springframework.boot.runApplication
 @SpringBootApplication
 @MapperScan("com.itt.data")
 class IttBackendApplication {
+
+    companion object{
+        //Monitor servers running
+        val serversRunning = AtomicInteger()
+    }
 
 }
 

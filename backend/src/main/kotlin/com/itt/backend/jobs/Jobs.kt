@@ -4,13 +4,10 @@
 
 package com.itt.backend.jobs
 
-import com.itt.data.service.TaskService
 import org.quartz.*
-import org.quartz.impl.StdSchedulerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Configuration
-import org.springframework.stereotype.Component
 import javax.annotation.PostConstruct
 
 
@@ -28,7 +25,6 @@ class JobsConfiguration {
     @Value("\${itt.program.start.schedule}")
     val programStartCronSchedule: String? = null
 
-    private val jobGroup = "ITT-QUARTZ_GROUP"
 
     @PostConstruct
     fun postConstruct() {
@@ -40,55 +36,15 @@ class JobsConfiguration {
      */
     private fun launchProgramStarterJob() {
         val job: JobDetail = JobBuilder.newJob(ProgramStarterJob::class.java)
-                .withIdentity(ProgramStarterJob::class.java.simpleName, jobGroup)
+                .withIdentity(ProgramStarterJob::class.java.simpleName, ProgramStarterJob.jobGroup)
                 .build()
 
         val trigger = TriggerBuilder.newTrigger()
-                .withIdentity("${ProgramStarterJob::class.java.simpleName}Trigger", jobGroup)
+                .withIdentity("${ProgramStarterJob::class.java.simpleName}Trigger", ProgramStarterJob.jobGroup)
                 .withSchedule(CronScheduleBuilder.cronSchedule(programStartCronSchedule))
-                .forJob(ProgramStarterJob::class.java.simpleName, jobGroup)
+                .forJob(ProgramStarterJob::class.java.simpleName, ProgramStarterJob.jobGroup)
                 .build()
 
         scheduler?.scheduleJob(job, trigger)
-    }
-}
-
-
-/**
- * Program starter job.
- *
- * This job will start the ITT program.
- * Will run every time as defined by the cron schedule
- * @see JobsConfiguration#programStartCronSchedule
- */
-@Component
-class ProgramStarterJob : Job {
-
-    @Autowired
-    private val scheduler: Scheduler? = null
-
-    @Autowired
-    private val taskService: TaskService? = null
-
-    @Throws(JobExecutionException::class)
-    override fun execute(arg0: JobExecutionContext?) {
-        println("Task Tracker Job Started")
-        //Clear DB tasks table
-        taskService?.deleteAllTasks()
-        //TODO: 1. Stop, Launch START job
-        //TODO: 2. Stop, Launch STOP job
-        //TODO: 3. Stop, Launch REPORT job
-    }
-
-    fun stopJob(name: String) {
-        val currentlyExecuting = scheduler?.currentlyExecutingJobs
-
-        if (currentlyExecuting != null) {
-            for (jobExecutionContext in currentlyExecuting) {
-                if (jobExecutionContext.jobDetail.key.name == name) {
-                    scheduler?.interrupt(jobExecutionContext.jobDetail.key)
-                }
-            }
-        }
     }
 }
