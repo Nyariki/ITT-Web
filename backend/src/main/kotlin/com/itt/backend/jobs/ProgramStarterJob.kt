@@ -6,7 +6,8 @@ package com.itt.backend.jobs
 
 import com.itt.backend.IttBackendApplication
 import com.itt.backend.addSeconds
-import com.itt.data.service.EventsService
+import com.itt.backend.service.EventsService
+import com.itt.backend.stopJobs
 import org.quartz.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -37,35 +38,37 @@ class ProgramStarterJob : Job {
     @Throws(JobExecutionException::class)
     override fun execute(arg0: JobExecutionContext?) {
         println(jobGroup + "Task Tracker Job Started")
-        IttBackendApplication.serversRunning.set(0)
 
         //Clear all events from db table
         eventsService?.deleteAllEvents()
 
-        //Stop jobs if running
-        stopJobs(
-                mutableListOf(
-                        StartServerJob::class.java.simpleName,
-                        StopServerJob::class.java.simpleName,
-                        ReportServersRunningJob::class.java.simpleName))
-
         //Launch jobs afresh
+        launchProgramTimeJob()
         launchStartServerJob()
         launchStopServerJob()
         launchReportServersRunningJob()
 
     }
 
-    fun stopJobs(names: MutableList<String>) {
-        val currentlyExecuting = scheduler?.currentlyExecutingJobs
+    /**
+     * Launch start server job
+     */
+    private fun launchProgramTimeJob() {
+        val job: JobDetail = JobBuilder.newJob(ProgramTimeJob::class.java)
+                .withIdentity(ProgramTimeJob::class.java.simpleName, jobGroup)
+                .build()
 
-        if (currentlyExecuting != null) {
-            for (jobExecutionContext in currentlyExecuting) {
-                if (names.contains(jobExecutionContext.jobDetail.key.name)) {
-                    scheduler?.interrupt(jobExecutionContext.jobDetail.key)
-                }
-            }
-        }
+        val trigger = TriggerBuilder.newTrigger()
+                .withIdentity("${ProgramTimeJob::class.java.simpleName}Trigger", jobGroup)
+                .startAt(Date().addSeconds(1))
+                .withPriority(ProgramTimeJob.priority)
+                .withSchedule(SimpleScheduleBuilder.simpleSchedule()
+                        .withIntervalInSeconds(ProgramTimeJob.interval)
+                        .repeatForever())
+                .forJob(ProgramTimeJob::class.java.simpleName, jobGroup)
+                .build()
+
+        scheduler?.scheduleJob(job, trigger)
     }
 
     /**

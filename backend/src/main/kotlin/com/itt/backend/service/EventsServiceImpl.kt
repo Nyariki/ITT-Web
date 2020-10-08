@@ -16,13 +16,19 @@ class EventsServiceImpl : EventsService {
     @Autowired
     private val eventsDao: EventsDao? = null
 
+    override fun getEventByTimeAndColor(time: String, color: String): MutableList<Event>? {
+        val eventExample = EventExample()
+        eventExample.createCriteria().andTimeEqualTo(time).andColorEqualTo(color.capitalize())
+        return eventsDao?.selectByExample(eventExample)
+    }
+
     override fun deleteAllEvents() {
         val eventExample = EventExample()
         eventExample.createCriteria().andIdIsNotNull() //will include all DB records
         eventsDao?.deleteByExample(eventExample)
     }
 
-    override fun addEvent(event : Event){
+    override fun addEvent(event: Event) {
         eventsDao?.insert(event)
     }
 }

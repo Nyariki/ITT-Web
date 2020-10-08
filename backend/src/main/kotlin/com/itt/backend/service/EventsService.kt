@@ -9,4 +9,5 @@ import com.itt.data.model.Event
 interface EventsService {
     fun deleteAllEvents()
     fun addEvent(event : Event)
+    fun getEventByTimeAndColor(time : String, color : String) : MutableList<Event>?
 }

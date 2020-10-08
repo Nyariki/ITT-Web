@@ -5,10 +5,15 @@
 package com.itt.backend.jobs
 
 import com.itt.backend.IttBackendApplication
+import com.itt.backend.programTimeFormat
+import com.itt.backend.service.EventsService
+import com.itt.data.model.Event
 import org.quartz.Job
 import org.quartz.JobExecutionContext
 import org.quartz.JobExecutionException
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import java.util.*
 
 
 /**
@@ -23,6 +28,9 @@ import org.springframework.stereotype.Component
 @Component
 class ReportServersRunningJob : Job {
 
+    @Autowired
+    private val eventsService: EventsService? = null
+
     companion object {
         val priority = 3
             get() = 100 - field //Convert priority to quartz priority
@@ -32,6 +40,16 @@ class ReportServersRunningJob : Job {
 
     @Throws(JobExecutionException::class)
     override fun execute(arg0: JobExecutionContext?) {
-        println(ProgramStarterJob.jobGroup + "${IttBackendApplication.serversRunning} servers running")
+        val n =IttBackendApplication.serversRunning
+
+        //save event to db
+        eventsService?.addEvent(Event().apply {
+            this.type = 3
+            this.color = IttBackendApplication.reportJobColor.get()
+            this.message = "Report $n servers running"
+            this.time = programTimeFormat.format(IttBackendApplication.programTime.get().time)
+        })
+        //log
+        println(ProgramStarterJob.jobGroup + "$n servers running")
     }
 }
