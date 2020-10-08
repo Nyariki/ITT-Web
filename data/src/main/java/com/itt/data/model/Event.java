@@ -1,27 +1,22 @@
-/*
- * Copyright (c) 2020. Robert Mayore
- */
-
 package com.itt.data.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
  * events
- * @author Robert Mayore
+ * @author 
  */
 public class Event implements Serializable {
-    private BigDecimal id;
+    private Long id;
 
-    private Long programType;
+    private Long type;
 
     private String color;
 
     private String message;
 
-    private Date programTime;
+    private String time;
 
     private Date createdAt;
 
@@ -29,20 +24,20 @@ public class Event implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public BigDecimal getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(BigDecimal id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Long getProgramType() {
-        return programType;
+    public Long getType() {
+        return type;
     }
 
-    public void setProgramType(Long programType) {
-        this.programType = programType;
+    public void setType(Long type) {
+        this.type = type;
     }
 
     public String getColor() {
@@ -61,12 +56,12 @@ public class Event implements Serializable {
         this.message = message;
     }
 
-    public Date getProgramTime() {
-        return programTime;
+    public String getTime() {
+        return time;
     }
 
-    public void setProgramTime(Date programTime) {
-        this.programTime = programTime;
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public Date getCreatedAt() {

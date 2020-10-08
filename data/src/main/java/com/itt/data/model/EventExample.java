@@ -1,10 +1,5 @@
-/*
- * Copyright (c) 2020. Robert Mayore
- */
-
 package com.itt.data.model;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -120,113 +115,113 @@ public class EventExample {
             return (Criteria) this;
         }
 
-        public Criteria andIdEqualTo(BigDecimal value) {
+        public Criteria andIdEqualTo(Long value) {
             addCriterion("id =", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdNotEqualTo(BigDecimal value) {
+        public Criteria andIdNotEqualTo(Long value) {
             addCriterion("id <>", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdGreaterThan(BigDecimal value) {
+        public Criteria andIdGreaterThan(Long value) {
             addCriterion("id >", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdGreaterThanOrEqualTo(BigDecimal value) {
+        public Criteria andIdGreaterThanOrEqualTo(Long value) {
             addCriterion("id >=", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdLessThan(BigDecimal value) {
+        public Criteria andIdLessThan(Long value) {
             addCriterion("id <", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdLessThanOrEqualTo(BigDecimal value) {
+        public Criteria andIdLessThanOrEqualTo(Long value) {
             addCriterion("id <=", value, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdIn(List<BigDecimal> values) {
+        public Criteria andIdIn(List<Long> values) {
             addCriterion("id in", values, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdNotIn(List<BigDecimal> values) {
+        public Criteria andIdNotIn(List<Long> values) {
             addCriterion("id not in", values, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andIdBetween(Long value1, Long value2) {
             addCriterion("id between", value1, value2, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdNotBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andIdNotBetween(Long value1, Long value2) {
             addCriterion("id not between", value1, value2, "id");
             return (Criteria) this;
         }
 
-        public Criteria andProgramTypeIsNull() {
-            addCriterion("program_type is null");
+        public Criteria andTypeIsNull() {
+            addCriterion("`type` is null");
             return (Criteria) this;
         }
 
-        public Criteria andProgramTypeIsNotNull() {
-            addCriterion("program_type is not null");
+        public Criteria andTypeIsNotNull() {
+            addCriterion("`type` is not null");
             return (Criteria) this;
         }
 
-        public Criteria andProgramTypeEqualTo(Long value) {
-            addCriterion("program_type =", value, "programType");
+        public Criteria andTypeEqualTo(Long value) {
+            addCriterion("`type` =", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andProgramTypeNotEqualTo(Long value) {
-            addCriterion("program_type <>", value, "programType");
+        public Criteria andTypeNotEqualTo(Long value) {
+            addCriterion("`type` <>", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andProgramTypeGreaterThan(Long value) {
-            addCriterion("program_type >", value, "programType");
+        public Criteria andTypeGreaterThan(Long value) {
+            addCriterion("`type` >", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andProgramTypeGreaterThanOrEqualTo(Long value) {
-            addCriterion("program_type >=", value, "programType");
+        public Criteria andTypeGreaterThanOrEqualTo(Long value) {
+            addCriterion("`type` >=", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andProgramTypeLessThan(Long value) {
-            addCriterion("program_type <", value, "programType");
+        public Criteria andTypeLessThan(Long value) {
+            addCriterion("`type` <", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andProgramTypeLessThanOrEqualTo(Long value) {
-            addCriterion("program_type <=", value, "programType");
+        public Criteria andTypeLessThanOrEqualTo(Long value) {
+            addCriterion("`type` <=", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andProgramTypeIn(List<Long> values) {
-            addCriterion("program_type in", values, "programType");
+        public Criteria andTypeIn(List<Long> values) {
+            addCriterion("`type` in", values, "type");
             return (Criteria) this;
         }
 
-        public Criteria andProgramTypeNotIn(List<Long> values) {
-            addCriterion("program_type not in", values, "programType");
+        public Criteria andTypeNotIn(List<Long> values) {
+            addCriterion("`type` not in", values, "type");
             return (Criteria) this;
         }
 
-        public Criteria andProgramTypeBetween(Long value1, Long value2) {
-            addCriterion("program_type between", value1, value2, "programType");
+        public Criteria andTypeBetween(Long value1, Long value2) {
+            addCriterion("`type` between", value1, value2, "type");
             return (Criteria) this;
         }
 
-        public Criteria andProgramTypeNotBetween(Long value1, Long value2) {
-            addCriterion("program_type not between", value1, value2, "programType");
+        public Criteria andTypeNotBetween(Long value1, Long value2) {
+            addCriterion("`type` not between", value1, value2, "type");
             return (Criteria) this;
         }
 
@@ -370,63 +365,73 @@ public class EventExample {
             return (Criteria) this;
         }
 
-        public Criteria andProgramTimeIsNull() {
-            addCriterion("program_time is null");
+        public Criteria andTimeIsNull() {
+            addCriterion("`time` is null");
             return (Criteria) this;
         }
 
-        public Criteria andProgramTimeIsNotNull() {
-            addCriterion("program_time is not null");
+        public Criteria andTimeIsNotNull() {
+            addCriterion("`time` is not null");
             return (Criteria) this;
         }
 
-        public Criteria andProgramTimeEqualTo(Date value) {
-            addCriterion("program_time =", value, "programTime");
+        public Criteria andTimeEqualTo(String value) {
+            addCriterion("`time` =", value, "time");
             return (Criteria) this;
         }
 
-        public Criteria andProgramTimeNotEqualTo(Date value) {
-            addCriterion("program_time <>", value, "programTime");
+        public Criteria andTimeNotEqualTo(String value) {
+            addCriterion("`time` <>", value, "time");
             return (Criteria) this;
         }
 
-        public Criteria andProgramTimeGreaterThan(Date value) {
-            addCriterion("program_time >", value, "programTime");
+        public Criteria andTimeGreaterThan(String value) {
+            addCriterion("`time` >", value, "time");
             return (Criteria) this;
         }
 
-        public Criteria andProgramTimeGreaterThanOrEqualTo(Date value) {
-            addCriterion("program_time >=", value, "programTime");
+        public Criteria andTimeGreaterThanOrEqualTo(String value) {
+            addCriterion("`time` >=", value, "time");
             return (Criteria) this;
         }
 
-        public Criteria andProgramTimeLessThan(Date value) {
-            addCriterion("program_time <", value, "programTime");
+        public Criteria andTimeLessThan(String value) {
+            addCriterion("`time` <", value, "time");
             return (Criteria) this;
         }
 
-        public Criteria andProgramTimeLessThanOrEqualTo(Date value) {
-            addCriterion("program_time <=", value, "programTime");
+        public Criteria andTimeLessThanOrEqualTo(String value) {
+            addCriterion("`time` <=", value, "time");
             return (Criteria) this;
         }
 
-        public Criteria andProgramTimeIn(List<Date> values) {
-            addCriterion("program_time in", values, "programTime");
+        public Criteria andTimeLike(String value) {
+            addCriterion("`time` like", value, "time");
             return (Criteria) this;
         }
 
-        public Criteria andProgramTimeNotIn(List<Date> values) {
-            addCriterion("program_time not in", values, "programTime");
+        public Criteria andTimeNotLike(String value) {
+            addCriterion("`time` not like", value, "time");
             return (Criteria) this;
         }
 
-        public Criteria andProgramTimeBetween(Date value1, Date value2) {
-            addCriterion("program_time between", value1, value2, "programTime");
+        public Criteria andTimeIn(List<String> values) {
+            addCriterion("`time` in", values, "time");
             return (Criteria) this;
         }
 
-        public Criteria andProgramTimeNotBetween(Date value1, Date value2) {
-            addCriterion("program_time not between", value1, value2, "programTime");
+        public Criteria andTimeNotIn(List<String> values) {
+            addCriterion("`time` not in", values, "time");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeBetween(String value1, String value2) {
+            addCriterion("`time` between", value1, value2, "time");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeNotBetween(String value1, String value2) {
+            addCriterion("`time` not between", value1, value2, "time");
             return (Criteria) this;
         }
 

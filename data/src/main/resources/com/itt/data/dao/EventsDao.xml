@@ -2,11 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itt.data.dao.EventsDao">
   <resultMap id="BaseResultMap" type="com.itt.data.model.Event">
-    <id column="id" jdbcType="DECIMAL" property="id" />
-    <result column="program_type" jdbcType="DECIMAL" property="programType" />
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="type" jdbcType="DECIMAL" property="type" />
     <result column="color" jdbcType="VARCHAR" property="color" />
     <result column="message" jdbcType="VARCHAR" property="message" />
-    <result column="program_time" jdbcType="TIMESTAMP" property="programTime" />
+    <result column="time" jdbcType="VARCHAR" property="time" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
@@ -69,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, program_type, color, message, program_time, created_at, updated_at
+    id, `type`, color, message, `time`, created_at, updated_at
   </sql>
   <select id="selectByExample" parameterType="com.itt.data.model.EventExample" resultMap="BaseResultMap">
     select
@@ -85,15 +85,15 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.math.BigDecimal" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from events
-    where id = #{id,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from events
-    where id = #{id,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=BIGINT}
   </delete>
   <delete id="deleteByExample" parameterType="com.itt.data.model.EventExample">
     delete from events
@@ -102,18 +102,18 @@
     </if>
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.itt.data.model.Event" useGeneratedKeys="true">
-    insert into events (program_type, color, message, 
-      program_time, created_at, updated_at
+    insert into events (`type`, color, message, 
+      `time`, created_at, updated_at
       )
-    values (#{programType,jdbcType=DECIMAL}, #{color,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR}, 
-      #{programTime,jdbcType=TIMESTAMP}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}
+    values (#{type,jdbcType=DECIMAL}, #{color,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR}, 
+      #{time,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.itt.data.model.Event" useGeneratedKeys="true">
     insert into events
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="programType != null">
-        program_type,
+      <if test="type != null">
+        `type`,
       </if>
       <if test="color != null">
         color,
@@ -121,8 +121,8 @@
       <if test="message != null">
         message,
       </if>
-      <if test="programTime != null">
-        program_time,
+      <if test="time != null">
+        `time`,
       </if>
       <if test="createdAt != null">
         created_at,
@@ -132,8 +132,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="programType != null">
-        #{programType,jdbcType=DECIMAL},
+      <if test="type != null">
+        #{type,jdbcType=DECIMAL},
       </if>
       <if test="color != null">
         #{color,jdbcType=VARCHAR},
@@ -141,8 +141,8 @@
       <if test="message != null">
         #{message,jdbcType=VARCHAR},
       </if>
-      <if test="programTime != null">
-        #{programTime,jdbcType=TIMESTAMP},
+      <if test="time != null">
+        #{time,jdbcType=VARCHAR},
       </if>
       <if test="createdAt != null">
         #{createdAt,jdbcType=TIMESTAMP},
@@ -162,10 +162,10 @@
     update events
     <set>
       <if test="record.id != null">
-        id = #{record.id,jdbcType=DECIMAL},
+        id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.programType != null">
-        program_type = #{record.programType,jdbcType=DECIMAL},
+      <if test="record.type != null">
+        `type` = #{record.type,jdbcType=DECIMAL},
       </if>
       <if test="record.color != null">
         color = #{record.color,jdbcType=VARCHAR},
@@ -173,8 +173,8 @@
       <if test="record.message != null">
         message = #{record.message,jdbcType=VARCHAR},
       </if>
-      <if test="record.programTime != null">
-        program_time = #{record.programTime,jdbcType=TIMESTAMP},
+      <if test="record.time != null">
+        `time` = #{record.time,jdbcType=VARCHAR},
       </if>
       <if test="record.createdAt != null">
         created_at = #{record.createdAt,jdbcType=TIMESTAMP},
@@ -189,11 +189,11 @@
   </update>
   <update id="updateByExample" parameterType="map">
     update events
-    set id = #{record.id,jdbcType=DECIMAL},
-      program_type = #{record.programType,jdbcType=DECIMAL},
+    set id = #{record.id,jdbcType=BIGINT},
+      `type` = #{record.type,jdbcType=DECIMAL},
       color = #{record.color,jdbcType=VARCHAR},
       message = #{record.message,jdbcType=VARCHAR},
-      program_time = #{record.programTime,jdbcType=TIMESTAMP},
+      `time` = #{record.time,jdbcType=VARCHAR},
       created_at = #{record.createdAt,jdbcType=TIMESTAMP},
       updated_at = #{record.updatedAt,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
@@ -203,8 +203,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.itt.data.model.Event">
     update events
     <set>
-      <if test="programType != null">
-        program_type = #{programType,jdbcType=DECIMAL},
+      <if test="type != null">
+        `type` = #{type,jdbcType=DECIMAL},
       </if>
       <if test="color != null">
         color = #{color,jdbcType=VARCHAR},
@@ -212,8 +212,8 @@
       <if test="message != null">
         message = #{message,jdbcType=VARCHAR},
       </if>
-      <if test="programTime != null">
-        program_time = #{programTime,jdbcType=TIMESTAMP},
+      <if test="time != null">
+        `time` = #{time,jdbcType=VARCHAR},
       </if>
       <if test="createdAt != null">
         created_at = #{createdAt,jdbcType=TIMESTAMP},
@@ -222,16 +222,16 @@
         updated_at = #{updatedAt,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where id = #{id,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.itt.data.model.Event">
     update events
-    set program_type = #{programType,jdbcType=DECIMAL},
+    set `type` = #{type,jdbcType=DECIMAL},
       color = #{color,jdbcType=VARCHAR},
       message = #{message,jdbcType=VARCHAR},
-      program_time = #{programTime,jdbcType=TIMESTAMP},
+      `time` = #{time,jdbcType=VARCHAR},
       created_at = #{createdAt,jdbcType=TIMESTAMP},
       updated_at = #{updatedAt,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>
