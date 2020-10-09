@@ -22,6 +22,11 @@ class EventsServiceImpl : EventsService {
         return eventsDao?.selectByExample(eventExample)
     }
 
+    override fun getAllEvents(): MutableList<Event>? {
+        val eventExample = EventExample()
+        return eventsDao?.selectByExample(eventExample)
+    }
+
     override fun deleteAllEvents() {
         val eventExample = EventExample()
         eventExample.createCriteria().andIdIsNotNull() //will include all DB records

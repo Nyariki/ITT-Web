@@ -29,7 +29,9 @@ class IttBackendApplication {
         val reportJobColor = AtomicReference<String>()
 
         //time
-        val programTime = AtomicReference<Calendar>()
+        val programStart = AtomicReference<Date>() //program start time in real time
+        val programTimeStart = AtomicReference<Date>() //program start time in program time
+        val programTime = AtomicReference<Calendar>() //current program time
 
         fun resetJobData(){
             serversRunning.set(0)
@@ -39,11 +41,13 @@ class IttBackendApplication {
             reportJobColor.set(generateNiceColor())
 
             val cal = Calendar.getInstance()
+            programStart.set(cal.time)
             cal.set(Calendar.HOUR_OF_DAY, 12)
             cal.set(Calendar.MINUTE, 0)
             cal.set(Calendar.SECOND, 0)
             cal.set(Calendar.MILLISECOND, 0)
             programTime.set(cal)
+            programTimeStart.set(cal.time)
         }
     }
 

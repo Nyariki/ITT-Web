@@ -10,4 +10,5 @@ interface EventsService {
     fun deleteAllEvents()
     fun addEvent(event : Event)
     fun getEventByTimeAndColor(time : String, color : String) : MutableList<Event>?
+    fun getAllEvents() : MutableList<Event>?
 }

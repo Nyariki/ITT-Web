@@ -47,7 +47,7 @@ class StopServerJob : Job {
         //save event to db
         eventsService?.addEvent(Event().apply {
             this.type = 2
-            this.color = IttBackendApplication.reportJobColor.get()
+            this.color = IttBackendApplication.stopJobColor.get()
             this.message = "Stop $n servers"
             this.time = programTimeFormat.format(IttBackendApplication.programTime.get().time)
         })

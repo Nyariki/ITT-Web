@@ -1,11 +1,9 @@
 package com.itt.backend.controller
 
-import com.itt.backend.defaultTimeFormat
+import com.itt.backend.*
 import com.itt.backend.jobs.*
-import com.itt.backend.launchProgramStarterJob
-import com.itt.backend.programTimeFormat
 import com.itt.backend.service.EventsService
-import com.itt.backend.stopJobs
+import com.itt.data.model.Event
 import org.quartz.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -40,8 +38,52 @@ class ProgramController {
     @GetMapping("start")
     fun start(): ResponseEntity<Any> {
         launchProgramStarterJob(scheduler)
-        return ResponseEntity.status(HttpStatus.OK).body("Program started at ${defaultTimeFormat.format(Date())}")
+
+        val body: HashMap<String, Any?> = HashMap()
+
+        body["status"] = true
+        body["message"] = "Program started successfully at ${defaultTimeFormat.format(IttBackendApplication.programStart.get())}"
+        body["data"] = defaultTimeFormat.format(IttBackendApplication.programTimeStart.get())
+
+        return ResponseEntity.status(HttpStatus.OK).body(body)
     }
+
+    /**
+     * Will fetch all the events
+     *
+     * @return
+     */
+    @GetMapping("report")
+    fun allEvents(): ResponseEntity<Any> {
+        val body: HashMap<String, Any?> = HashMap()
+        body["status"] = true
+        body["message"] = "report fetched successfully"
+
+        val list: MutableList<Event> = eventsService?.getAllEvents() ?: mutableListOf()
+
+        //conflate events happening at same time
+        list.groupBy { it.time }.mapValues {
+            it.value.apply {
+                val list = it.value.toMutableList()
+                val event1 = list[0]
+                list.removeAt(0)
+                list.forEach { event -> event1.message = event1.message + ", ${event.message}" }
+                listOf(event1)
+            }
+        }
+
+        //remove created at, updated at
+        list.map {
+            it.createdAt = null
+            it.updatedAt = null
+            it
+        }
+
+        body["list"] = list
+
+        return ResponseEntity.status(HttpStatus.OK).body(body)
+    }
+
 
     /**
      * Start
@@ -51,10 +93,10 @@ class ProgramController {
      * @return
      */
     @PostMapping("get-current-tasks")
-    fun start(@RequestParam(value = "time", required = true) time: String, @RequestParam(value = "color", required = true) color: String): ResponseEntity<Any> {
+    fun eventByTime(@RequestParam(value = "time", required = true) time: String, @RequestParam(value = "color", required = true) color: String): ResponseEntity<Any> {
         //TODO: Reset color
         val body: HashMap<String, Any?> = HashMap()
-        body["success"] = true
+        body["status"] = true
         body["message"] = "events fetched successfully"
         body["events"] = eventsService?.getEventByTimeAndColor(time, color)
 

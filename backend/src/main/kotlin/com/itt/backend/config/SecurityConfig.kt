@@ -34,6 +34,7 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/health").permitAll()
                 .antMatchers(HttpMethod.GET, "/start").permitAll()
+                .antMatchers(HttpMethod.GET, "/report").permitAll()
                 .antMatchers(HttpMethod.POST, "/get-current-tasks").permitAll()
                 .anyRequest().authenticated()
                 .and()
