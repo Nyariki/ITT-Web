@@ -4,7 +4,7 @@ This is the Web backend for the [ITT-Project](https://github.com/users/Nyariki/p
 
 ##### 1. [DB](db)
 
-The DB modules uses [Mybatis Migrations](https://mybatis.org/migrations/) to manage a MYSQL database. The migrations are run via mysql scripts in the [scripts](ITT-WEB/db/migrations/scripts).
+The DB modules uses [Mybatis Migrations](https://mybatis.org/migrations/) to manage a MYSQL database. The migrations are run via mysql scripts in the [scripts](db/migrations/scripts).
 
 1. Point the db [environment](db/migrations/environments/development.properties) file to your ```mysql``` instance.
 In my case it's a local database instance called ```itt``` and running on port ```3306```. My username is ```root``` and my password is ```root```.
