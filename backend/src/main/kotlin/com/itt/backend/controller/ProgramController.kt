@@ -43,7 +43,7 @@ class ProgramController {
 
         body["status"] = true
         body["message"] = "Program started successfully at ${defaultTimeFormat.format(IttBackendApplication.programStart.get())}"
-        body["data"] = defaultTimeFormat.format(IttBackendApplication.programTimeStart.get())
+        body["object"] = defaultTimeFormat.format(IttBackendApplication.programTimeStart.get())
 
         return ResponseEntity.status(HttpStatus.OK).body(body)
     }
@@ -61,44 +61,80 @@ class ProgramController {
 
         val list: MutableList<Event> = eventsService?.getAllEvents() ?: mutableListOf()
 
-        //conflate events happening at same time
-        list.groupBy { it.time }.mapValues {
-            it.value.apply {
-                val list = it.value.toMutableList()
-                val event1 = list[0]
-                list.removeAt(0)
-                list.forEach { event -> event1.message = event1.message + ", ${event.message}" }
-                listOf(event1)
+        //conflate events happening at the same time
+        var newList = list.toMutableList()
+                .groupBy { it.time }
+                .apply {
+                    this.values.forEach {
+                        val tempList = it.toCollection(mutableListOf())
+                        tempList.removeAt(0)
+                        tempList.forEach { event -> it[0].message = it[0].message + ", ${event.message}" }
+                    }
+                }.values.map {
+            it.toMutableList().distinctBy { it.time }.map {
+                it?.createdAt = null
+                it?.updatedAt = null
+                it
             }
-        }
+        }.toMutableList().flatten()
 
-        //remove created at, updated at
-        list.map {
-            it.createdAt = null
-            it.updatedAt = null
-            it
-        }
-
-        body["list"] = list
+        body["list"] = newList
 
         return ResponseEntity.status(HttpStatus.OK).body(body)
     }
 
 
     /**
-     * Start
+     * Retrieves current events
      *
-     * @param time in format HH:mm:ss
-     * @param color in format #AABBCC
+     * @param time
+     * @param startColor
+     * @param stopColor
+     * @param reportColor
      * @return
      */
-    @PostMapping("get-current-tasks")
-    fun eventByTime(@RequestParam(value = "time", required = true) time: String, @RequestParam(value = "color", required = true) color: String): ResponseEntity<Any> {
-        //TODO: Reset color
+    @PostMapping("get-current-events")
+    fun eventByTime(@RequestParam(value = "time", required = true) time: String,
+                    @RequestParam(value = "start_color", required = false) startColor: String?,
+                    @RequestParam(value = "stop_color", required = false) stopColor: String?,
+                    @RequestParam(value = "report_color", required = false) reportColor: String?): ResponseEntity<Any> {
+
         val body: HashMap<String, Any?> = HashMap()
+        val data: HashMap<String, Any?> = HashMap()
+
+        //check if program is started
+        if(IttBackendApplication.programStart.get() == null){
+            body["status"] = false
+            body["message"] = "program not started yet"
+
+            return ResponseEntity.status(HttpStatus.OK).body(body)
+        }
+
+        //get program time from current time in request
+        val date = currentEventTimeFormat.parse(time)
+        val offset = IttBackendApplication.programTimeStart.get().time - IttBackendApplication.programStart.get().time
+        val programTime = programTimeFormat.format(Date(date.time + offset))
+
+        //get events
+        val events = eventsService?.getEventByTime(programTime)
+        events?.forEach {
+            when (it.type) {
+                1L -> data["start_color"] = IttBackendApplication.startJobColor.updateAndGet { generateNiceColor() }
+                2L -> data["stop_color"] = IttBackendApplication.stopJobColor.updateAndGet { generateNiceColor() }
+                3L -> data["report_color"] = IttBackendApplication.reportJobColor.updateAndGet { generateNiceColor() }
+            }
+            //remove created at, updated at
+            it.createdAt = null
+            it.updatedAt = null
+        }
+
+        //prepare response data
+        data["time"] = currentEventTimeFormat.format(IttBackendApplication.programTime.get().time)
+        data["events"] = events
+
         body["status"] = true
         body["message"] = "events fetched successfully"
-        body["events"] = eventsService?.getEventByTimeAndColor(time, color)
+        body["object"] = data
 
         return ResponseEntity.status(HttpStatus.OK).body(body)
     }

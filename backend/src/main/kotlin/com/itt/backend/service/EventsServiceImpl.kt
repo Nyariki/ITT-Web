@@ -16,9 +16,9 @@ class EventsServiceImpl : EventsService {
     @Autowired
     private val eventsDao: EventsDao? = null
 
-    override fun getEventByTimeAndColor(time: String, color: String): MutableList<Event>? {
+    override fun getEventByTime(time: String): MutableList<Event>? {
         val eventExample = EventExample()
-        eventExample.createCriteria().andTimeEqualTo(time).andColorEqualTo(color.capitalize())
+        eventExample.createCriteria().andTimeLike(time)
         return eventsDao?.selectByExample(eventExample)
     }
 

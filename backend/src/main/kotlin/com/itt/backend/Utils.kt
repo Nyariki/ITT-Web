@@ -54,12 +54,18 @@ val programTimeFormat =  SimpleDateFormat("hh:mm:ss")
 val defaultTimeFormat =  SimpleDateFormat("YYYY-MM-dd hh:mm a")
 
 /**
+ * Current Event time format
+ */
+val currentEventTimeFormat =  SimpleDateFormat("YYYY-MM-dd hh:mm:ss.SSS")
+
+/**
  * Launch program starter job now
  */
 fun launchProgramStarterJob(scheduler: Scheduler?) {
     //Stop jobs if running
     stopJobs(scheduler,
             mutableListOf(
+                    ProgramTimeJob::class.java.simpleName,
                     ProgramStarterJob::class.java.simpleName,
                     StartServerJob::class.java.simpleName,
                     StopServerJob::class.java.simpleName,
@@ -90,7 +96,7 @@ fun launchProgramStarterJob(scheduler: Scheduler?) {
  * @param names
  */
 fun stopJobs(scheduler: Scheduler?, names: MutableList<String>) {
-    val currentlyExecuting = scheduler?.currentlyExecutingJobs
+    /*val currentlyExecuting = scheduler?.currentlyExecutingJobs
 
     if (currentlyExecuting != null) {
         for (jobExecutionContext in currentlyExecuting) {
@@ -98,5 +104,6 @@ fun stopJobs(scheduler: Scheduler?, names: MutableList<String>) {
                 scheduler?.interrupt(jobExecutionContext.jobDetail.key)
             }
         }
-    }
+    }*/
+    scheduler?.clear()
 }
