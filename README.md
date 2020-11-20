@@ -39,6 +39,25 @@ To set up,
 The app can be launched using on the command line as a gradle task. 
 
 To start, in the [main](backend)  directory, open the command-line and run ```gradlew bootRun```  
-Be sure to run  ```gradlew clean build``` before the first run
 
 It can also be run simply from any java IDE via the Application class
+
+##### [DOCKER ](backend)
+
+A [Dockerfile](Dockerfile) has been provided for building an image of the backend. The image can be built with the following command in any environment with docker supported.  
+```
+docker build \       
+-t myorg/itt \
+--build-arg port=8081 \
+--build-arg db='jdbc:mysql://localhost:25060/itt-db?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=EAT' \
+--build-arg dbUser=root \
+--build-arg dbPassword=root .
+```
+
+The build arguments are as follows:-
+- ```port``` - The port to run the spring app from. You can change it from ```8081```.
+- ```db``` - The url to your database. In this case it is a mysql db on ```localhost```, on port ```2560```, named ```itt-db```.
+- ```dbUser``` - The database user with permission over the above database, in this case ```root```.
+- ```dbPassword``` - The password of the above database user, in this case ```root```.
+
+After the docker image has been built, it can be run with the command ```docker run -p 8081:8081 myorg/itt```
