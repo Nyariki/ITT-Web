@@ -1,6 +1,6 @@
 #### ITT WEB
 
-This is the Web backend for the [ITT-Project](https://github.com/users/Nyariki/projects/2). The Web platform is written in Spring. It is divided into 3 configurable modules.
+This is the Web backend for the [ITT-Problem](https://github.com/Nyariki/ITT-PROBLEM/). The Web platform is written in Spring. It is divided into 3 configurable modules.
 
 ##### 1. [DB](db)
 
