@@ -24,7 +24,7 @@ No additional setup is required here, as the configurations for this module are 
 
 ##### 3. [BACKEND ](backend)
 
-This is a Spring MVC app that will run our backend.
+This is a Spring Boot app that will run our backend.
 - It is written purely in Kotlin.
 - It is built in top of Spring Boot 2.0.
 - It uses the [Quartz Scheduler](http://www.quartz-scheduler.org/) to run jobs.
